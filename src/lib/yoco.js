@@ -69,53 +69,23 @@ export const confirmYocoPayment = async ({ type, purchaseId, bookingId }) => {
 }
 
 /**
- * Upsert customer by email for music checkout.
+ * Upsert customer by email for music checkout (via SECURITY DEFINER RPC).
  * Merges type to `both` when an existing booker buys music.
  */
 export const upsertBuyerCustomer = async ({ full_name, cell_number, email }) => {
   const normalizedEmail = normalizeCustomerEmail(email)
 
-  const { data: inserted, error: insertError } = await supabase
-    .from('customers')
-    .insert({
-      full_name: full_name.trim(),
-      cell_number: cell_number.trim(),
-      email: normalizedEmail,
-      type: 'buyer',
-    })
-    .select('id, type')
-    .single()
+  const { data: customerId, error } = await supabase.rpc('upsert_checkout_customer', {
+    p_full_name: full_name.trim(),
+    p_cell_number: cell_number.trim(),
+    p_email: normalizedEmail,
+    p_type: 'buyer',
+  })
 
-  if (!insertError && inserted) return inserted
+  if (error) throw error
+  if (!customerId) throw new Error('Could not create customer')
 
-  if (insertError?.code !== '23505') {
-    throw insertError || new Error('Could not create customer')
-  }
-
-  const { data: existing, error: selectError } = await supabase
-    .from('customers')
-    .select('id, type')
-    .ilike('email', normalizedEmail)
-    .maybeSingle()
-
-  if (selectError) throw selectError
-  if (!existing) throw insertError
-
-  const mergedType = existing.type === 'booker' ? 'both' : existing.type || 'buyer'
-
-  const { data: updated, error: updateError } = await supabase
-    .from('customers')
-    .update({
-      full_name: full_name.trim(),
-      cell_number: cell_number.trim(),
-      type: mergedType,
-    })
-    .eq('id', existing.id)
-    .select('id, type')
-    .single()
-
-  if (updateError) throw updateError
-  return updated
+  return { id: customerId }
 }
 
 /** Create a pending purchase — confirmed via Yoco checkout status API. */

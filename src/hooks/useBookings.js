@@ -51,50 +51,18 @@ export const useCreateBooking = () => {
     mutationFn: async (payload) => {
       const email = payload.email.trim().toLowerCase()
 
-      const { data: existingCustomer, error: lookupError } = await supabase
-        .from('customers')
-        .select('id, type')
-        .ilike('email', email)
-        .maybeSingle()
+      const { data: customerId, error: customerError } = await supabase.rpc(
+        'upsert_checkout_customer',
+        {
+          p_full_name: payload.full_name,
+          p_cell_number: stripPhone(payload.cell_number),
+          p_email: email,
+          p_type: 'booker',
+        }
+      )
 
-      if (lookupError) throw lookupError
-
-      let customerId
-
-      if (existingCustomer) {
-        const newType =
-          existingCustomer.type === 'buyer' || existingCustomer.type === 'both'
-            ? 'both'
-            : 'booker'
-
-        const { data, error } = await supabase
-          .from('customers')
-          .update({
-            full_name: payload.full_name,
-            cell_number: stripPhone(payload.cell_number),
-            type: newType,
-          })
-          .eq('id', existingCustomer.id)
-          .select('id')
-          .single()
-
-        if (error) throw error
-        customerId = data.id
-      } else {
-        const { data, error } = await supabase
-          .from('customers')
-          .insert({
-            full_name: payload.full_name,
-            cell_number: stripPhone(payload.cell_number),
-            email,
-            type: 'booker',
-          })
-          .select('id')
-          .single()
-
-        if (error) throw error
-        customerId = data.id
-      }
+      if (customerError) throw customerError
+      if (!customerId) throw new Error('Could not create customer')
 
       const { data: booking, error: bookingError } = await supabase
         .from('bookings')
