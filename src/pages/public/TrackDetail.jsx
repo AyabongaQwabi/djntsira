@@ -48,11 +48,6 @@ const TrackDetail = () => {
 
   const pricing = getItemPricing(track)
   const categoryLabel = TRACK_CATEGORIES[track.category]?.[lang] || track.category
-  const coverUrl = track.cover_url
-    ? track.cover_url.startsWith('http')
-      ? track.cover_url
-      : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/covers/${track.cover_url}`
-    : null
 
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6">
@@ -65,7 +60,7 @@ const TrackDetail = () => {
       </Link>
 
       <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-        <CoverImage src={coverUrl} alt={track.title} size="lg" />
+        <CoverImage src={track.cover_url} alt={track.title} size="lg" />
 
         <div className="flex flex-col gap-4">
           <div>

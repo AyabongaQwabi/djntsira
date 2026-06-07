@@ -17,6 +17,7 @@ import { useBundles } from '../../hooks/useBundles'
 import { formatCurrency } from '../../lib/format'
 import { calcDiscountedPrice } from '../../lib/pricing'
 import { TRACK_CATEGORIES } from '../../lib/constants'
+import { getCoverPublicUrl } from '../../lib/storage'
 
 const TRACK_COLUMNS =
   'id,title,category,price,discount_type,discount_value,discount_expires_at,preview_duration,file_url,cover_url,published,created_at'
@@ -404,7 +405,7 @@ const MusicManager = () => {
                             <div className="flex items-center gap-3">
                               {track.cover_url ? (
                                 <img
-                                  src={supabase.storage.from('covers').getPublicUrl(track.cover_url).data.publicUrl}
+                                  src={getCoverPublicUrl(track.cover_url)}
                                   alt=""
                                   className="h-10 w-10 rounded object-cover"
                                 />
@@ -724,7 +725,7 @@ const TrackForm = ({ track, onCancel, onSave, isSaving }) => {
           />
           {form.existingCoverUrl && !coverFile && (
             <img
-              src={supabase.storage.from('covers').getPublicUrl(form.existingCoverUrl).data.publicUrl}
+              src={getCoverPublicUrl(form.existingCoverUrl)}
               alt="Current cover"
               className="mt-2 h-16 w-16 rounded object-cover"
             />

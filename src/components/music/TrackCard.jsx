@@ -13,16 +13,11 @@ const TrackCard = ({ track, onBuy }) => {
   const lang = i18n.language?.startsWith('en') ? 'en' : 'xh'
   const categoryLabel = TRACK_CATEGORIES[track.category]?.[lang] || track.category
   const pricing = getItemPricing(track)
-  const coverUrl = track.cover_url
-    ? track.cover_url.startsWith('http')
-      ? track.cover_url
-      : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/covers/${track.cover_url}`
-    : null
 
   return (
     <article className="flex flex-col overflow-hidden rounded-xl border border-border bg-surface">
       <Link to={`/music/${track.id}`} className="block">
-        <CoverImage src={coverUrl} alt={track.title} />
+        <CoverImage src={track.cover_url} alt={track.title} />
       </Link>
 
       <div className="flex flex-1 flex-col gap-3 p-4">

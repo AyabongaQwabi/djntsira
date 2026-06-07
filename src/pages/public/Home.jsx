@@ -1,66 +1,19 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Calendar } from "lucide-react";
 import { useTracks } from "../../hooks/useTracks";
-import { formatCurrency } from "../../lib/format";
-import { calcDiscountedPrice } from "../../lib/pricing";
 import Button from "../../components/ui/Button";
-import Badge from "../../components/ui/Badge";
-import LoadingSpinner from "../../components/shared/LoadingSpinner";
+import Spinner from "../../components/ui/Spinner";
 import EmptyState from "../../components/ui/EmptyState";
-
-const TrackPreviewCard = ({ track, t }) => {
-  const price = calcDiscountedPrice(
-    track.price,
-    track.discount_type,
-    track.discount_value,
-    track.discount_expires_at,
-  );
-  const hasDiscount = price < Number(track.price);
-
-  return (
-    <Link
-      to={`/music/${track.id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent/50"
-    >
-      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-surface-2 to-primary">
-        {track.cover_url ? (
-          <img
-            src={track.cover_url}
-            alt={track.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center font-display text-4xl text-accent/40">
-            DN
-          </div>
-        )}
-        {hasDiscount ? (
-          <Badge variant="gold" className="absolute right-2 top-2">
-            {t("music.discount")}
-          </Badge>
-        ) : null}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="font-semibold text-[var(--color-text)] line-clamp-2">
-          {track.title}
-        </h3>
-        <Badge variant="gold" className="w-fit">
-          {track.category === "stem" ? t("music.stem") : t("music.full_song")}
-        </Badge>
-        <p className="mt-auto font-display text-xl text-accent">
-          {formatCurrency(price)}
-        </p>
-      </div>
-    </Link>
-  );
-};
+import TrackCard from "../../components/music/TrackCard";
+import BuyModal from "../../components/music/BuyModal";
 
 const Home = () => {
   const { t } = useTranslation();
   const { data: tracks = [], isLoading } = useTracks({ publishedOnly: true });
   const previewTracks = tracks.slice(0, 4);
+  const [buyTrack, setBuyTrack] = useState(null);
 
   return (
     <div>
@@ -182,7 +135,9 @@ const Home = () => {
         </div>
 
         {isLoading ? (
-          <LoadingSpinner fullScreen />
+          <div className="flex justify-center py-12">
+            <Spinner size="lg" label={t("common.loading")} />
+          </div>
         ) : previewTracks.length === 0 ? (
           <EmptyState
             title={t("home.no_tracks_title")}
@@ -194,12 +149,23 @@ const Home = () => {
             }
           />
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {previewTracks.map((track) => (
-              <TrackPreviewCard key={track.id} track={track} t={t} />
+              <TrackCard
+                key={track.id}
+                track={track}
+                onBuy={(item) => setBuyTrack(item)}
+              />
             ))}
           </div>
         )}
+
+        <BuyModal
+          open={Boolean(buyTrack)}
+          onClose={() => setBuyTrack(null)}
+          item={buyTrack}
+          itemType="track"
+        />
 
         <Link to="/music" className="mt-6 block sm:hidden">
           <Button variant="secondary" fullWidth>

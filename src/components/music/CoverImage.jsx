@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Music2 } from 'lucide-react'
+import { getCoverPublicUrl } from '../../lib/storage'
 
 const CoverImage = ({ src, alt, className = '', size = 'md' }) => {
+  const resolvedSrc = getCoverPublicUrl(src)
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -11,7 +13,7 @@ const CoverImage = ({ src, alt, className = '', size = 'md' }) => {
     lg: 'aspect-square w-full max-w-sm',
   }
 
-  const showImage = src && !failed
+  const showImage = resolvedSrc && !failed
 
   return (
     <div
@@ -30,7 +32,7 @@ const CoverImage = ({ src, alt, className = '', size = 'md' }) => {
       )}
       {showImage ? (
         <img
-          src={src}
+          src={resolvedSrc}
           alt={alt}
           loading="lazy"
           decoding="async"
