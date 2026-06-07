@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "music": "Umculo",
+    "book": "Bhuka",
+    "admin": "Ulawulo"
+  },
+  "home": {
+    "hero_tagline": "ISANDI SEGQOM ESIZA KUWE",
+    "hero_subtitle": "Gqom, iGqom, nomculo waseKomani — ufikelele kuwe naphi na.",
+    "buy_music": "Thenga Umculo",
+    "book_now": "Bhuka Ngoku",
+    "about_title": "Malunga ngo DJ Ntsira",
+    "about_bio": "DJ Ntsira nguLituko Siphe, ingcali yeGqom evela eKomani, eMpuma Koloni. Umculo wakhe uthetha umntu wonke.",
+    "social_follow": "Landela kuthi:",
+    "music_preview": "Umculo Omtsha",
+    "music_preview_sub": "Phulaphula kwaye uthenge ngqo — akukho ikhadi.",
+    "see_all": "Bona Konke",
+    "no_tracks_title": "Akukho mculo okwangoku",
+    "no_tracks_message": "Umculo omtsha uza kungekudala. Jonga kwakhona!",
+    "booking_cta_title": "Ufuna iGqom evela kuwe?",
+    "booking_cta_body": "Bhuka DJ Ntsira kwisiganeko sakho — imini okanye ebusuku, naphi na eMpuma Koloni.",
+    "footer_tagline": "Gqom evela eKomani, eMpuma Koloni."
+  },
+  "music": {
+    "preview": "Phulaphula",
+    "buy": "Thenga",
+    "full_song": "Ingoma epheleleyo",
+    "stem": "i-Stem",
+    "category": "Uhlobo",
+    "price": "Ixabiso",
+    "discount": "i-Discount",
+    "bundle": "Iphakeji"
+  },
+  "booking": {
+    "title": "Bhuka u-DJ Ntsira",
+    "full_name": "Igama elipheleleyo",
+    "cell": "Inombolo yefoni",
+    "email": "I-imeyile",
+    "event_type": "Uhlobo lwesiganeko",
+    "venue": "Indawo",
+    "city": "Isixeko",
+    "date": "Umhla",
+    "start_time": "Ixesha lokuqala",
+    "end_time": "Ixesha lokugqiba",
+    "crowd_size": "Ubungakanani bemimangaliso",
+    "day_booking": "Ukubhuka kwemini",
+    "night_booking": "Ukubhuka kobusuku",
+    "notes": "Amanqaku",
+    "submit": "Thumela",
+    "hospitality_ack": "Ndiyavuma ukubonelela ngesistim yesandi, izibane, i-DJ booth kunye namanzi.",
+    "deposit_notice": "Idiphozithi engenamhlombo ka-50% iyafuneka ukuqinisekisa ukubhuka.",
+    "transport_notice": "Intlawulo yothutho iya kubangelwa ukuba indawo ikude nge-20km+"
+  },
+  "admin": {
+    "dashboard": "Ikhaya",
+    "music_manager": "Ulawulo lomculo",
+    "bookings": "Ukubhuka",
+    "customers": "Abathengi",
+    "marketing": "Urhwebo",
+    "settings": "Useto",
+    "logout": "Phuma"
+  },
+  "common": {
+    "loading": "iya-loader...",
+    "error": "Kukhona impazamo",
+    "save": "Gcina",
+    "cancel": "Rhoxisa",
+    "delete": "Cima",
+    "edit": "Hlela",
+    "export": "Khipha",
+    "search": "Khangela",
+    "whatsapp": "Thumela ku-WhatsApp"
+  }
+}

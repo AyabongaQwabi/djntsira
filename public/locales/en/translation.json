@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "music": "Music",
+    "book": "Book",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero_tagline": "GQOM SOUND COMING TO YOU",
+    "hero_subtitle": "Gqom from Komani, Eastern Cape — bringing the sound to your event.",
+    "buy_music": "Buy Music",
+    "book_now": "Book Now",
+    "about_title": "About DJ Ntsira",
+    "about_bio": "DJ Ntsira is Lituko Siphe, a Gqom specialist from Komani (Queenstown), Eastern Cape. His music speaks to everyone.",
+    "social_follow": "Follow on:",
+    "music_preview": "Latest Music",
+    "music_preview_sub": "Preview and buy directly — no cart needed.",
+    "see_all": "See All",
+    "no_tracks_title": "No tracks yet",
+    "no_tracks_message": "New music is on the way. Check back soon!",
+    "booking_cta_title": "Want Gqom at your event?",
+    "booking_cta_body": "Book DJ Ntsira for your next event — day or night, anywhere in the Eastern Cape.",
+    "footer_tagline": "Gqom from Komani, Eastern Cape."
+  },
+  "music": {
+    "preview": "Preview",
+    "buy": "Buy",
+    "full_song": "Full Song",
+    "stem": "Stem",
+    "category": "Category",
+    "price": "Price",
+    "discount": "Discount",
+    "bundle": "Bundle"
+  },
+  "booking": {
+    "title": "Book DJ Ntsira",
+    "full_name": "Full Name",
+    "cell": "Cell / WhatsApp",
+    "email": "Email",
+    "event_type": "Event Type",
+    "venue": "Venue",
+    "city": "City / Town",
+    "date": "Date",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "crowd_size": "Expected Crowd Size",
+    "day_booking": "Day Booking",
+    "night_booking": "Night Booking",
+    "notes": "Additional Notes",
+    "submit": "Submit Booking",
+    "hospitality_ack": "I confirm sound system, lighting, DJ booth and water will be provided.",
+    "deposit_notice": "A 50% non-refundable deposit is required to confirm your booking.",
+    "transport_notice": "A transport fee applies for venues more than 20km from Queenstown."
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "music_manager": "Music Manager",
+    "bookings": "Bookings",
+    "customers": "Customers",
+    "marketing": "Marketing",
+    "settings": "Settings",
+    "logout": "Log Out"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "export": "Export",
+    "search": "Search",
+    "whatsapp": "WhatsApp"
+  }
+}
