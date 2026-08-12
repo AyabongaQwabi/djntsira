@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import ErrorMessage from '../../components/shared/ErrorMessage'
+import Seo from '../../components/seo/Seo'
 
 const Login = () => {
   const { signIn, user, loading } = useAuth()
@@ -34,6 +35,7 @@ const Login = () => {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] p-4">
+      <Seo title="Admin Login" path="/admin/login" noindex />
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-6 shadow-xl">
         <div className="mb-6 flex flex-col items-center text-center">
           <img

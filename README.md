@@ -26,8 +26,10 @@ npm run dev            # http://localhost:5173
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | Local dev server |
-| `npm run build` | Production build → `dist/` |
+| `npm run build` | Production build → `dist/` (also generates `public/sitemap.xml`, rewrites `public/robots.txt`, and writes static per-route SEO snapshots into `dist/`) |
 | `npm run preview` | Preview production build |
+| `npm run generate:sitemap` | Regenerate `public/sitemap.xml` and `public/robots.txt` from `VITE_SITE_URL` + published Supabase tracks |
+| `npm run postbuild:seo` | Inject per-route `<head>` snapshots into `dist/` for non-JS crawlers (runs automatically as part of `build`) |
 | `npm run lint` | ESLint |
 | `npm run check:i18n` | Verify xh/en locale key parity |
 
@@ -209,3 +211,139 @@ docs/plans/         agent-contracts.md, build plan
 ## License
 
 Private — DJ Ntsira / client project.
+
+## AEO / GEO
+
+Summary of the SEO / AEO (Answer Engine Optimization) / GEO (Generative Engine
+Optimization) implementation pass, and — most importantly — the CSR
+limitation and its impact on AI crawler visibility.
+
+### What was implemented
+
+**Technical**
+- `VITE_SITE_URL` env var (`.env.local` / `.env.example`) — canonical/base
+  URL everywhere, never hardcoded. Read via `import.meta.env.VITE_SITE_URL`
+  in `src/lib/seo.js`, with a `http://localhost:5173` fallback for dev.
+- `public/robots.txt` — explicit `Disallow: /admin`, `/download/`, `/payment/`
+  (private/transactional routes), and a deliberate **allow** list for AI
+  crawlers (GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-Web,
+  anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot
+  variants, Bytespider, Meta-ExternalAgent, CCBot) — deliberate, since DJ
+  Ntsira wants visibility in AI answers as a self-promotion channel.
+  References `Sitemap: <VITE_SITE_URL>/sitemap.xml`.
+- `scripts/generate-sitemap.js` — build-time script (runs via `npm run build`
+  → `npm run generate:sitemap`) that writes `public/sitemap.xml` from static
+  routes (`/`, `/music`, `/book`) plus every published track's `/music/:id`
+  page, fetched live from Supabase. Also rewrites the `%VITE_SITE_URL%`
+  placeholder left in `public/robots.txt` (Vite only interpolates
+  `%VITE_*%` in `index.html`, not other `public/` files).
+- `netlify.toml` — added security headers (CSP, HSTS via
+  `Strict-Transport-Security`, `X-Frame-Options: DENY`,
+  `X-Content-Type-Options: nosniff`, `Referrer-Policy`,
+  `Permissions-Policy`), short cache on `robots.txt`/`sitemap.xml`, no-cache
+  on `index.html`. The SPA catch-all redirect was moved after the headers
+  and kept last so real static files (sitemap, robots, per-route SEO
+  snapshots) are served directly instead of always falling through to
+  `index.html`.
+- `react-helmet-async` added and wired via `HelmetProvider` in `src/main.jsx`;
+  `src/components/seo/Seo.jsx` centralizes per-route title/description/
+  keywords/canonical/OG/Twitter/JSON-LD, applied on every public and admin
+  route.
+
+**Schema (JSON-LD)**
+- `src/lib/seo.js` builders: `Person` + `MusicGroup` (DJ Ntsira entity,
+  reused via `@id` references for entity clarity), `WebSite`,
+  `MusicRecording` (per track), `MusicPlaylist` (bundles), `Service`
+  (booking/DJ-hire), `BreadcrumbList` (music listing, track detail, booking).
+- The same Person/MusicGroup/WebSite graph is duplicated statically in
+  `index.html` as a baseline (see CSR note below).
+
+**On-page**
+- Rewrote page titles/descriptions around real search intent: "Gqom DJ",
+  "Queenstown"/"Komani", "Eastern Cape", "book a DJ", "buy Gqom music" —
+  reflected in `index.html`, `Seo.js` defaults, and each page's `<Seo>` call
+  (Home, Music, TrackDetail, Book).
+- Transactional/private routes (`/admin/*`, `/payment/*`, `/booking-confirmed`,
+  `/download/:token`) are explicitly `noindex, nofollow` via `<Seo noindex />`.
+
+**Programmatic SEO**
+- The data model only supports one true templated public content type:
+  tracks (`/music/:id`, from Supabase `tracks` table). There is no
+  events/gigs/press table — booking is a private request form, not a public
+  calendar — so there was no Event/gig-listing programmatic opportunity to
+  build without inventing new content the client didn't ask for.
+- Implemented: per-track `MusicRecording` JSON-LD + keyword-rich
+  title/description template, and the sitemap generator automatically picks
+  up every published track. This is the realistic "programmatic SEO" surface
+  for this app today.
+
+### CSR / prerendering — the critical limitation
+
+This app is a **pure client-side-rendered Vite + React SPA**. `vite.config.js`
+has no SSR, prerender, or static-generation plugin — confirmed by inspection.
+`dist/index.html` is a single shell (`<div id="root">` + a module script) and
+every route, including `/music/:id`, resolves to that same shell client-side
+via `react-router-dom`.
+
+**Impact on AI crawlers specifically:** most AI answer-engine bots (GPTBot,
+ClaudeBot, PerplexityBot, and the majority of "fetch and read" AI crawlers)
+**do not execute JavaScript**. A bot that requests `/music` or
+`/music/<uuid>` directly — the exact pages this site most wants cited (Gqom
+tracks, booking) — would, without mitigation, receive only the generic
+homepage-level `<head>` baked into the shell, not that page's title,
+description, or JSON-LD. Content inside `#root` (track names, prices,
+descriptions) is invisible to any crawler that doesn't run JS at all.
+
+**What was actually implemented to mitigate this** (within reasonable scope,
+short of adopting a full SSR framework):
+1. `index.html` baseline `<head>` was strengthened with accurate site-wide
+   title/description/OG/Twitter tags and a Person/MusicGroup/WebSite JSON-LD
+   graph, so any bot that never runs JS and never runs the postbuild script
+   still gets a correct, keyword-rich baseline for the domain as a whole.
+2. `scripts/postbuild-seo.js` — a lightweight static-HTML-snapshot injector
+   that runs after `vite build`. For the known static routes (`/music`,
+   `/book`), it clones `dist/index.html`, rewrites the title/description/
+   canonical/OG/Twitter tags for that route, and writes it to
+   `dist/music/index.html` and `dist/book/index.html`. Netlify serves static
+   files before falling through to the SPA redirect, so a non-JS crawler
+   hitting `/music` now gets `/music`-specific meta tags without a full page
+   render.
+
+**What was deliberately NOT implemented, and why:**
+- **Per-track static snapshots** (`dist/music/<id>/index.html` for every
+  track) were not generated. Track data is dynamic (changes whenever the DJ
+  publishes/prices music via the admin panel) and there could eventually be
+  hundreds of tracks — a build-time snapshot step would need to run on every
+  content change, not just every code deploy, which this repo's Netlify
+  build (triggered by git push) doesn't do. Doing this properly needs either
+  (a) a Netlify build hook triggered from the admin "publish track" action,
+  or (b) migrating the public storefront to an SSR/hybrid framework
+  (Next.js, Astro, Remix) or a prerendering tool (`react-snap`,
+  `vite-plugin-ssr` / `vike`) that can fetch Supabase data at build/request
+  time per route. That is the recommended follow-up if AI-crawler visibility
+  of individual tracks becomes a priority — flagging it here rather than
+  guessing at a bigger architectural change than requested.
+- No full SSR migration was attempted — out of scope for an SEO pass on an
+  existing CSR app, and a bigger decision than "implement SEO changes"
+  implies.
+
+**Net effect:** Googlebot/Bingbot (which do execute JS) see fully correct,
+route-specific meta and JSON-LD via `react-helmet-async` regardless. Non-JS
+AI crawlers now see correct meta for `/`, `/music`, and `/book` (covering the
+site's main commercial intents — buy music, book a DJ), plus the sitemap and
+robots.txt policy. They will **not** see individual track titles/prices
+unless those crawlers happen to run JS (some, like Googlebot-driven Gemini
+grounding, do) or until per-track prerendering is built as described above.
+
+### Deliberately skipped / out of scope
+- Per-track static prerendering (see above).
+- `llms.txt` — considered, but skipped: it's an emerging, non-standardized
+  convention with inconsistent AI-crawler support, and the site's content
+  (music store + booking form) doesn't have the kind of long-form
+  documentation/FAQ content llms.txt is meant to summarize. robots.txt +
+  sitemap.xml + JSON-LD entity data covers the same intent more reliably
+  today.
+- FAQPage schema — no FAQ content exists on the site yet; adding fabricated
+  FAQ copy just to attach schema would be against schema.org guidelines
+  (markup must reflect visible content). Flagging as a future opportunity if
+  the client adds a real FAQ section (e.g. booking terms, deposit policy).

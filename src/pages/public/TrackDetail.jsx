@@ -12,6 +12,8 @@ import BuyModal from '../../components/music/BuyModal'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Spinner from '../../components/ui/Spinner'
+import Seo from '../../components/seo/Seo'
+import { trackSchema, breadcrumbSchema } from '../../lib/seo'
 
 const TrackDetail = () => {
   const { id } = useParams()
@@ -24,6 +26,7 @@ const TrackDetail = () => {
   if (isLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center p-4">
+        <Seo title="Loading track…" path={`/music/${id}`} noindex />
         <Spinner size="lg" label={t('common.loading')} />
       </main>
     )
@@ -32,6 +35,7 @@ const TrackDetail = () => {
   if (error || !track) {
     return (
       <main className="min-h-screen p-4">
+        <Seo title="Track not found" path={`/music/${id}`} noindex />
         <Link
           to="/music"
           className="mb-6 inline-flex min-h-touch items-center gap-2 text-accent"
@@ -51,6 +55,21 @@ const TrackDetail = () => {
 
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6">
+      <Seo
+        title={`${track.title} — Buy Gqom ${categoryLabel} by DJ Ntsira`}
+        description={`Buy "${track.title}" (${categoryLabel}) by DJ Ntsira — original Gqom music from Queenstown, Eastern Cape. Preview instantly, ${formatCurrency(pricing.current)}.`}
+        path={`/music/${track.id}`}
+        image={track.cover_url || undefined}
+        type="music.song"
+        jsonLd={[
+          trackSchema(track),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Music', path: '/music' },
+            { name: track.title, path: `/music/${track.id}` },
+          ]),
+        ]}
+      />
       <Link
         to="/music"
         className="mb-6 inline-flex min-h-touch items-center gap-2 text-accent hover:underline"

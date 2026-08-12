@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle } from 'lucide-react'
 import BookingStatusBadge from '../../components/booking/BookingStatusBadge'
 import { formatCurrency, formatDate, formatTime } from '../../lib/format'
+import Seo from '../../components/seo/Seo'
 
 const BookingConfirmed = () => {
   const { t } = useTranslation()
@@ -15,6 +16,7 @@ const BookingConfirmed = () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-4 py-12 text-center">
+      <Seo title="Booking Request Sent" path="/booking-confirmed" noindex />
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-success)]/20">
         <CheckCircle className="h-10 w-10 text-[var(--color-success)]" aria-hidden />
       </div>

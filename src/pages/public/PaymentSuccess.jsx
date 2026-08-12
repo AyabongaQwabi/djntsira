@@ -5,6 +5,7 @@ import { usePaymentWithConfirmation } from '../../lib/yoco'
 import { formatCurrency } from '../../lib/format'
 import Button from '../../components/ui/Button'
 import Spinner from '../../components/ui/Spinner'
+import Seo from '../../components/seo/Seo'
 
 const PaymentSuccess = () => {
   const { t } = useTranslation()
@@ -26,6 +27,7 @@ const PaymentSuccess = () => {
   if (!ref || !kind || !id) {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+        <Seo title="Payment" path="/payment/success" noindex />
         <p className="text-[var(--color-error)]" role="alert">
           {t('payment.missing_ref', {
             defaultValue: 'Akukho reference yentlawulo ifunyenweyo.',
@@ -41,6 +43,7 @@ const PaymentSuccess = () => {
   if (isLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center p-4">
+        <Seo title="Payment" path="/payment/success" noindex />
         <Spinner size="lg" label={t('common.loading')} />
       </main>
     )
@@ -49,6 +52,7 @@ const PaymentSuccess = () => {
   if (error) {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+        <Seo title="Payment" path="/payment/success" noindex />
         <p className="text-[var(--color-error)]" role="alert">
           {t('payment.status_error', {
             defaultValue: 'Asikwazi ukuqinisekisa imeko yentlawulo. Jonga i-imeyile yakho.',
@@ -67,6 +71,7 @@ const PaymentSuccess = () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+      <Seo title="Payment" path="/payment/success" noindex />
       {isPaid ? (
         <CheckCircle
           className="mb-4 h-16 w-16 text-[var(--color-success)]"

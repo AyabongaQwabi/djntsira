@@ -4,8 +4,101 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="DJ Ntsira — Gqom music and bookings from Queenstown, Eastern Cape." />
-    <title>DJ Ntsira</title>
+
+    <!--
+      Baseline SEO/AEO safety net for a client-side-rendered React SPA.
+      react-helmet-async (see src/components/seo/Seo.jsx) overwrites these
+      tags per-route once JavaScript executes, but many crawlers — including
+      most AI answer-engine bots (GPTBot, ClaudeBot, PerplexityBot, etc.) —
+      do not execute JavaScript. Those bots only ever see exactly what is
+      below, so this baseline must stay accurate for the homepage and act as
+      a reasonable fallback for every other route. See AEO/GEO notes in README.md.
+    -->
+    <title>DJ Ntsira — Gqom DJ, Music & Bookings | Queenstown, Eastern Cape</title>
+    <meta
+      name="description"
+      content="DJ Ntsira (Lituko Siphe) is a Gqom DJ and producer from Komani (Queenstown), Eastern Cape. Stream and buy original Gqom tracks, stems and bundles, or book DJ Ntsira for weddings, parties, taverns and festivals across the Eastern Cape."
+    />
+    <meta
+      name="keywords"
+      content="DJ Ntsira, Gqom DJ, Gqom music, Queenstown DJ, Komani DJ, Eastern Cape DJ, book a DJ, Gqom mixes, Gqom producer, Lituko Siphe, DJ booking Eastern Cape, buy Gqom music"
+    />
+    <meta name="author" content="DJ Ntsira" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DJ Ntsira" />
+    <meta property="og:title" content="DJ Ntsira — Gqom DJ, Music & Bookings | Queenstown, Eastern Cape" />
+    <meta
+      property="og:description"
+      content="Gqom DJ and producer from Komani (Queenstown), Eastern Cape. Buy original Gqom tracks and stems, or book DJ Ntsira for your next event."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/images/logo.png" />
+    <meta property="og:locale" content="en_ZA" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@djntsira_sa" />
+    <meta name="twitter:title" content="DJ Ntsira — Gqom DJ, Music & Bookings | Queenstown, Eastern Cape" />
+    <meta
+      name="twitter:description"
+      content="Gqom DJ and producer from Komani (Queenstown), Eastern Cape. Buy original Gqom tracks and stems, or book DJ Ntsira for your next event."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/images/logo.png" />
+
+    <!-- Baseline JSON-LD (Person + MusicGroup + WebSite) for crawlers that don't run JS -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "%VITE_SITE_URL%/#person",
+            "name": "DJ Ntsira",
+            "alternateName": "Lituko Siphe",
+            "url": "%VITE_SITE_URL%/",
+            "image": "%VITE_SITE_URL%/images/portrait.webp",
+            "jobTitle": "DJ / Music Producer",
+            "genre": "Gqom",
+            "nationality": "South African",
+            "homeLocation": {
+              "@type": "Place",
+              "name": "Queenstown (Komani), Eastern Cape, South Africa"
+            },
+            "sameAs": [
+              "https://www.instagram.com/djntsira/",
+              "https://www.facebook.com/profile.php?id=61556947102512",
+              "https://www.tiktok.com/@djntsira_sa"
+            ]
+          },
+          {
+            "@type": "MusicGroup",
+            "@id": "%VITE_SITE_URL%/#musicgroup",
+            "name": "DJ Ntsira",
+            "genre": "Gqom",
+            "url": "%VITE_SITE_URL%/",
+            "image": "%VITE_SITE_URL%/images/portrait.webp",
+            "sameAs": [
+              "https://www.instagram.com/djntsira/",
+              "https://www.facebook.com/profile.php?id=61556947102512",
+              "https://www.tiktok.com/@djntsira_sa"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "%VITE_SITE_URL%/#website",
+            "url": "%VITE_SITE_URL%/",
+            "name": "DJ Ntsira",
+            "description": "DJ Ntsira (Lituko Siphe) is a Gqom DJ and producer from Komani (Queenstown), Eastern Cape. Stream and buy original Gqom tracks, stems and bundles, or book DJ Ntsira for weddings, parties, taverns and festivals across the Eastern Cape.",
+            "publisher": { "@id": "%VITE_SITE_URL%/#person" },
+            "inLanguage": ["en-ZA", "xh-ZA"]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

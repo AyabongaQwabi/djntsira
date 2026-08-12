@@ -2,6 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { XCircle } from 'lucide-react'
 import Button from '../../components/ui/Button'
+import Seo from '../../components/seo/Seo'
 
 const PaymentCancel = () => {
   const { t } = useTranslation()
@@ -10,6 +11,7 @@ const PaymentCancel = () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+      <Seo title="Payment Cancelled" path="/payment/cancel" noindex />
       <XCircle className="mb-4 h-16 w-16 text-[var(--color-warning)]" aria-hidden="true" />
 
       <h1 className="font-display text-3xl text-accent">

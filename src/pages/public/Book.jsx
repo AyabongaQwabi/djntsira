@@ -21,6 +21,8 @@ import {
   normalizeTime,
   toDateKey,
 } from '../../components/booking/booking-utils'
+import Seo from '../../components/seo/Seo'
+import { bookingServiceSchema, breadcrumbSchema } from '../../lib/seo'
 
 const Book = () => {
   const { t, i18n } = useTranslation()
@@ -172,6 +174,18 @@ const Book = () => {
 
   return (
     <main className="mx-auto min-h-screen max-w-5xl px-4 py-6">
+      <Seo
+        title="Book DJ Ntsira — Gqom DJ for Weddings, Parties & Events"
+        description="Book DJ Ntsira for weddings, birthdays, tavern nights, corporate events and festivals across the Eastern Cape. Check live availability and submit your booking request online."
+        path="/book"
+        jsonLd={[
+          bookingServiceSchema(),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Book', path: '/book' },
+          ]),
+        ]}
+      />
       <header className="mb-6">
         <h1 className="font-display text-4xl tracking-wide text-accent">
           {t('booking.title')}

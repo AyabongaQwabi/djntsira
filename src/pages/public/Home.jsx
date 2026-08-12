@@ -8,6 +8,8 @@ import Spinner from "../../components/ui/Spinner";
 import EmptyState from "../../components/ui/EmptyState";
 import TrackCard from "../../components/music/TrackCard";
 import BuyModal from "../../components/music/BuyModal";
+import Seo from "../../components/seo/Seo";
+import { DEFAULT_TITLE, DEFAULT_DESCRIPTION, buildDefaultGraph } from "../../lib/seo";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -17,6 +19,12 @@ const Home = () => {
 
   return (
     <div>
+      <Seo
+        fullTitle={DEFAULT_TITLE}
+        description={DEFAULT_DESCRIPTION}
+        path="/"
+        jsonLd={buildDefaultGraph()}
+      />
       {/* Hero */}
       <section className="relative min-h-[85vh] overflow-hidden">
         <img

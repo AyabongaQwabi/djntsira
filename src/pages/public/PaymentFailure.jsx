@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { XCircle } from 'lucide-react'
 import { parsePaymentRef } from '../../lib/yoco'
 import Button from '../../components/ui/Button'
+import Seo from '../../components/seo/Seo'
 
 const PaymentFailure = () => {
   const { t } = useTranslation()
@@ -12,6 +13,7 @@ const PaymentFailure = () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+      <Seo title="Payment Failed" path="/payment/failure" noindex />
       <XCircle className="mb-4 h-16 w-16 text-[var(--color-error)]" aria-hidden="true" />
 
       <h1 className="font-display text-3xl text-accent">

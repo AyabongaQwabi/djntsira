@@ -7,6 +7,7 @@ import { useBundle } from '../../hooks/useBundles'
 import { supabase } from '../../lib/supabase'
 import Button from '../../components/ui/Button'
 import Spinner from '../../components/ui/Spinner'
+import Seo from '../../components/seo/Seo'
 
 const triggerDownload = (url, filename) => {
   const anchor = document.createElement('a')
@@ -94,6 +95,7 @@ const SecureDownload = () => {
   if (purchaseLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center p-4">
+        <Seo title="Download" path={`/download/${token}`} noindex />
         <Spinner size="lg" label={t('common.loading')} />
       </main>
     )
@@ -102,6 +104,7 @@ const SecureDownload = () => {
   if (purchaseError || !purchase) {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+        <Seo title="Download" path={`/download/${token}`} noindex />
         <AlertCircle className="mb-4 h-12 w-12 text-[var(--color-error)]" aria-hidden="true" />
         <h1 className="font-display text-2xl text-accent">
           {t('download.invalid', { defaultValue: 'Ilink ayisebenzi' })}
@@ -121,6 +124,7 @@ const SecureDownload = () => {
   if (!isPaid) {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+        <Seo title="Download" path={`/download/${token}`} noindex />
         <AlertCircle className="mb-4 h-12 w-12 text-[var(--color-warning)]" aria-hidden="true" />
         <h1 className="font-display text-2xl text-accent">
           {t('download.not_paid', { defaultValue: 'Intlawulo ayiqinisekanga' })}
@@ -137,6 +141,7 @@ const SecureDownload = () => {
   if (isExpired) {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+        <Seo title="Download" path={`/download/${token}`} noindex />
         <AlertCircle className="mb-4 h-12 w-12 text-[var(--color-warning)]" aria-hidden="true" />
         <h1 className="font-display text-2xl text-accent">
           {t('download.expired', { defaultValue: 'Ilink iphelelwe lixesha' })}
@@ -152,6 +157,7 @@ const SecureDownload = () => {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center p-6 text-center">
+      <Seo title="Download Your Music" path={`/download/${token}`} noindex />
       <Download className="mb-4 h-12 w-12 text-accent" aria-hidden="true" />
 
       <h1 className="font-display text-2xl text-accent">

@@ -1,0 +1,81 @@
+# DJ Ntsira — robots.txt
+# Site: https://djntsira.umculo.app (see VITE_SITE_URL in .env.example)
+
+# --- Default: allow all traditional search crawlers ---
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /download/
+Disallow: /payment/
+
+# --- Traditional search engines (explicit, for clarity) ---
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+
+# --- AI / answer-engine crawlers — deliberately ALLOWED ---
+# DJ Ntsira is an independent artist promoting himself; visibility in AI
+# answers (ChatGPT, Perplexity, Copilot, Google AI Overviews, Claude/Brave)
+# is a promotional channel, not a threat. See AEO/GEO notes in README.md.
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /admin
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+
+Sitemap: https://djntsira.umculo.app/sitemap.xml

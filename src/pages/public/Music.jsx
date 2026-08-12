@@ -9,6 +9,8 @@ import BundleCard from '../../components/music/BundleCard'
 import BuyModal from '../../components/music/BuyModal'
 import Spinner from '../../components/ui/Spinner'
 import EmptyState from '../../components/ui/EmptyState'
+import Seo from '../../components/seo/Seo'
+import { breadcrumbSchema } from '../../lib/seo'
 
 const Music = () => {
   const { t } = useTranslation()
@@ -90,6 +92,15 @@ const Music = () => {
 
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6">
+      <Seo
+        title="Buy Gqom Music & Stems"
+        description="Browse and buy original Gqom tracks, stems and discounted bundles from DJ Ntsira. Instant digital download after purchase."
+        path="/music"
+        jsonLd={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Music', path: '/music' },
+        ])}
+      />
       <header className="mb-6">
         <h1 className="font-display text-4xl text-accent">
           {t('music.store_title', { defaultValue: 'Ivenkile yoMculo' })}

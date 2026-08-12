@@ -2,10 +2,44 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "20"
+
+# Security headers — applied to all routes.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.googleapis.com; media-src 'self' https://*.supabase.co data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"
+
+# robots.txt / sitemap.xml — short cache so crawler policy updates propagate quickly.
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "application/xml"
+
+# Static per-route SEO snapshots (see scripts/postbuild-seo.js) and index.html
+# itself must not be aggressively cached — content and meta tags can change
+# on every deploy.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# SPA fallback — client-side routing. Kept last / lowest priority so that
+# real static files (per-route SEO snapshots, sitemap.xml, robots.txt,
+# assets) are served directly instead of falling through to index.html.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[build.environment]
-  NODE_VERSION = "20"

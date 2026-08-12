@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run generate:sitemap && vite build && npm run postbuild:seo",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check:i18n": "node scripts/check-i18n-keys.js"
+    "check:i18n": "node scripts/check-i18n-keys.js",
+    "generate:sitemap": "node scripts/generate-sitemap.js",
+    "postbuild:seo": "node scripts/postbuild-seo.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -22,6 +24,7 @@
     "lucide-react": "^1.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-helmet-async": "^3.0.0",
     "react-hook-form": "^7.77.0",
     "react-i18next": "^17.0.8",
     "react-router-dom": "^7.17.0",

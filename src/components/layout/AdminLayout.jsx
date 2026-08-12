@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import Button from '../ui/Button'
+import Seo from '../seo/Seo'
 
 const navItems = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -51,6 +52,7 @@ const AdminLayout = () => {
 
   return (
     <div className="flex min-h-screen bg-[var(--color-bg)]">
+      <Seo title="Admin" path="/admin" noindex />
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-surface lg:flex">
         <div className="border-b border-border p-6">
           <div className="flex items-center gap-3">
